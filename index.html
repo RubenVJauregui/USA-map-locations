@@ -447,6 +447,14 @@
       margin-top: 14px;
     }
 
+    .detail-back-button {
+      margin-top: 10px;
+    }
+
+    .detail-back-button[hidden] {
+      display: none;
+    }
+
     .pill {
       display: inline-flex;
       align-items: center;
@@ -1050,6 +1058,7 @@
         <section class="detail" aria-live="polite">
           <h3 id="selectedName">Select a facility</h3>
           <p id="selectedAddress">Click any star on the map or choose a facility from the list.</p>
+          <button class="back-button detail-back-button" type="button" id="backToFacilityList" hidden>Back to facility list</button>
           <div class="detail-meta" id="detailMeta" hidden>
             <span class="pill" id="selectedRegion">No facility selected</span>
             <span class="pill" id="selectedStatus">Ready</span>
@@ -2308,6 +2317,7 @@
     const searchInput = document.getElementById("searchInput");
     const selectedName = document.getElementById("selectedName");
     const selectedAddress = document.getElementById("selectedAddress");
+    const backToFacilityList = document.getElementById("backToFacilityList");
     const selectedRegion = document.getElementById("selectedRegion");
     const selectedStatus = document.getElementById("selectedStatus");
     const detailMeta = document.getElementById("detailMeta");
@@ -2724,11 +2734,6 @@
       const heroHtml = data?.image
         ? `<button class="rich-hero enlarge-photo" type="button" data-src="${data.image}" data-alt="${data.imageAlt || title}" aria-label="Enlarge ${title} facility image" style="background-image:url('${data.image}')"></button>`
         : "";
-      const navigationHtml = `
-        <div class="rich-links">
-          <button class="back-button" type="button" id="backToFacilityList">Back to facility list</button>
-        </div>
-      `;
       const featureDetailsHtml = `
         ${facility.name === "146-El Paso" ? listingGalleryHtml(listingData?.gallery) : ""}
         <section class="rich-section">
@@ -2750,7 +2755,6 @@
       selectedStatus.hidden = !data;
       futureSlot.innerHTML = `
         <div class="rich-facility">
-          ${navigationHtml}
           ${visualsHtml}
           ${heroHtml}
           ${listingData ? featureDetailsHtml : ""}
@@ -2799,7 +2803,6 @@
           ${managerSectionHtml(facility.name)}
         </div>
       `;
-      document.getElementById("backToFacilityList")?.addEventListener("click", resetSelection);
       bindEnlargePhotos();
       bindListingImageFallbacks();
     }
@@ -2810,14 +2813,11 @@
       selectedName.textContent = data.title;
       selectedAddress.textContent = data.address;
       selectedRegion.textContent = "Buena Park, CA";
-      selectedStatus.textContent = "UNIS facility page";
+      selectedStatus.textContent = "";
       selectedStatus.className = "pill";
-      selectedStatus.hidden = false;
+      selectedStatus.hidden = true;
       futureSlot.innerHTML = `
         <div class="rich-facility">
-          <div class="rich-links">
-            <button class="back-button" type="button" id="backToFacilityList">Back to facility list</button>
-          </div>
           ${aerialViewSectionHtml(facility, data.title)}
           <button class="rich-hero enlarge-photo" type="button" data-src="${data.heroImage}" data-alt="Buena Park facility exterior" aria-label="Enlarge Buena Park facility exterior" style="background-image:url('${data.heroImage}')"></button>
           <section class="rich-section">
@@ -2890,7 +2890,6 @@
           </section>
         </div>
       `;
-      document.getElementById("backToFacilityList")?.addEventListener("click", resetSelection);
       bindEnlargePhotos();
     }
 
@@ -2899,6 +2898,7 @@
       document.querySelector(".side-panel").classList.add("rich-mode");
       selectedName.textContent = facility.name;
       selectedAddress.textContent = facility.address;
+      backToFacilityList.hidden = false;
       detailMeta.hidden = false;
       futureSlot.hidden = false;
       selectedRegion.textContent = `${facility.city}, ${facility.state}`;
@@ -3031,6 +3031,7 @@
       document.querySelector(".side-panel").classList.remove("rich-mode");
       selectedName.textContent = "Select a facility";
       selectedAddress.textContent = "Click any star on the map or choose a facility from the list.";
+      backToFacilityList.hidden = true;
       detailMeta.hidden = true;
       futureSlot.hidden = true;
       selectedRegion.textContent = "No facility selected";
@@ -3042,6 +3043,7 @@
     }
 
     document.getElementById("resetButton").addEventListener("click", resetSelection);
+    backToFacilityList.addEventListener("click", resetSelection);
     closeImageLightbox.addEventListener("click", closeImagePreview);
     imageLightbox.addEventListener("click", (event) => {
       if (event.target === imageLightbox) closeImagePreview();
