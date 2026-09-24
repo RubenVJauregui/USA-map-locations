@@ -2672,26 +2672,6 @@
     }
 
     function aerialViewSectionHtml(facility, title) {
-      const streetPicture = facilityViewPictures[facility.name]?.street;
-      return `
-        <section class="rich-section">
-          <h4>Facility Views</h4>
-          <div class="facility-visuals">
-            ${streetPicture ? `
-              <div class="visual-frame">
-                <strong>Street picture</strong>
-                <button class="gallery-photo enlarge-photo" type="button" data-src="${streetPicture.src}" data-alt="${streetPicture.alt}" aria-label="Enlarge ${streetPicture.alt}">
-                  <img src="${streetPicture.src}" alt="${streetPicture.alt}" loading="lazy">
-                </button>
-              </div>
-            ` : ""}
-            ${satelliteAerialFrameHtml(facility, title)}
-          </div>
-        </section>
-      `;
-    }
-
-    function fallbackVisualsHtml(facility, title) {
       const coords = `${facility.lat},${facility.lng}`;
       const address = encodeURIComponent(facility.address);
       const streetViewSrc = `https://www.google.com/maps?q=${address}&layer=c&cbll=${coords}&cbp=12,0,0,0,0&output=svembed`;
@@ -2740,18 +2720,13 @@
               ["City", facility.city],
               ["State", facility.state]
             ];
-      const listingSourceUrl = safeExternalUrl(listingData?.sourceUrl);
-      const visualsHtml = listingData
-        ? aerialViewSectionHtml(facility, title)
-        : `
-            ${data?.image ? `<button class="rich-hero enlarge-photo" type="button" data-src="${data.image}" data-alt="${data.imageAlt || title}" aria-label="Enlarge ${title} facility image" style="background-image:url('${data.image}')"></button>` : ""}
-            ${data?.image ? "" : fallbackVisualsHtml(facility, title)}
-            ${data?.image ? aerialViewSectionHtml(facility, title) : ""}
-          `;
+      const visualsHtml = aerialViewSectionHtml(facility, title);
+      const heroHtml = data?.image
+        ? `<button class="rich-hero enlarge-photo" type="button" data-src="${data.image}" data-alt="${data.imageAlt || title}" aria-label="Enlarge ${title} facility image" style="background-image:url('${data.image}')"></button>`
+        : "";
       const navigationHtml = `
         <div class="rich-links">
           <button class="back-button" type="button" id="backToFacilityList">Back to facility list</button>
-          ${listingSourceUrl ? `<a class="rich-link" href="${escapeHtml(listingSourceUrl)}" target="_blank" rel="noopener noreferrer">Source listing</a>` : ""}
         </div>
       `;
       const featureDetailsHtml = `
@@ -2762,7 +2737,7 @@
         </section>
         <section class="rich-section">
           <h4>Lease Highlights</h4>
-          ${(listingData?.highlights || []).map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          ${(listingData?.highlights || []).map((item) => `<p>${escapeHtml(item.replace(/^Source listing status:/, "Status:"))}</p>`).join("")}
         </section>
         ${facility.name === "146-El Paso" ? "" : listingGalleryHtml(listingData?.gallery)}
       `;
@@ -2775,7 +2750,10 @@
       selectedStatus.hidden = !data;
       futureSlot.innerHTML = `
         <div class="rich-facility">
-          ${listingData ? `${navigationHtml}${featureDetailsHtml}${visualsHtml}` : `${visualsHtml}${navigationHtml}`}
+          ${navigationHtml}
+          ${visualsHtml}
+          ${heroHtml}
+          ${listingData ? featureDetailsHtml : ""}
           <section class="rich-section">
             <h4>AI Summary</h4>
             <p>${summary}</p>
@@ -2837,11 +2815,11 @@
       selectedStatus.hidden = false;
       futureSlot.innerHTML = `
         <div class="rich-facility">
-          <button class="rich-hero enlarge-photo" type="button" data-src="${data.heroImage}" data-alt="Buena Park facility exterior" aria-label="Enlarge Buena Park facility exterior" style="background-image:url('${data.heroImage}')"></button>
-          ${aerialViewSectionHtml(facility, data.title)}
           <div class="rich-links">
             <button class="back-button" type="button" id="backToFacilityList">Back to facility list</button>
           </div>
+          ${aerialViewSectionHtml(facility, data.title)}
+          <button class="rich-hero enlarge-photo" type="button" data-src="${data.heroImage}" data-alt="Buena Park facility exterior" aria-label="Enlarge Buena Park facility exterior" style="background-image:url('${data.heroImage}')"></button>
           <section class="rich-section">
             <h4>AI Summary</h4>
             <p>${data.summary}</p>
