@@ -1537,13 +1537,6 @@
       }
     };
 
-    const facilityStreetPictures = {
-      "Cotton": {
-        src: "wise-facility-assets/cotton-street-view.png",
-        alt: "Cotton facility street picture"
-      }
-    };
-
     const facilityViewPictures = {
       "Airport": {
         street: {
@@ -1611,33 +1604,6 @@
           alt: "Tacoma facility aerial view"
         }
       }
-    };
-
-    const facilityAerialZooms = {
-      "146-El Paso": 17,
-      "Airport": 17,
-      "Alessandro": 17,
-      "Citypark": 17,
-      "Cotton": 17,
-      "Cypress/Summerville": 16,
-      "Delp-892": 18,
-      "Ignition/Jacksonville": 18,
-      "Joliet - Chicago": 16,
-      "Lincoln": 17,
-      "Moreno Valley": 17,
-      "Plano": 18,
-      "Prosperity": 16,
-      "Roanoke": 16,
-      "Sacramento": 18,
-      "Seabrook": 16,
-      "Sparks/Vista": 18,
-      "Somerset": 18,
-      "Tacoma": 17,
-      "University Park": 17,
-      "Valley View": 16,
-      "Vista": 18,
-      "Willow": 18,
-      "Quality": 18
     };
 
     const facilityTopCustomers = {
@@ -2654,63 +2620,29 @@
       `;
     }
 
-    function satelliteAerialFrameHtml(facility, title) {
-      const aerialPicture = facilityViewPictures[facility.name]?.aerial;
-      if (aerialPicture) {
-        return `
-          <div class="visual-frame">
-            <strong>Satellite aerial view</strong>
-            <button class="gallery-photo enlarge-photo" type="button" data-src="${aerialPicture.src}" data-alt="${aerialPicture.alt}" aria-label="Enlarge ${aerialPicture.alt}">
-              <img src="${aerialPicture.src}" alt="${aerialPicture.alt}" loading="lazy">
-            </button>
-          </div>
-        `;
-      }
-      const coords = `${facility.lat},${facility.lng}`;
-      const zoom = facilityAerialZooms[facility.name] || 17;
-      return `
-        <div class="visual-frame">
-          <strong>Satellite aerial view</strong>
-          <iframe
-            title="${title} satellite aerial view"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps?q=${encodeURIComponent(facility.address)}&ll=${coords}&z=${zoom}&t=k&output=embed">
-          </iframe>
-        </div>
-      `;
-    }
+    function facilityViewsSectionHtml(facility) {
+      const pictures = facilityViewPictures[facility.name];
+      const streetPicture = pictures?.street;
+      const aerialPicture = pictures?.aerial;
 
-    function aerialViewSectionHtml(facility, title) {
-      const coords = `${facility.lat},${facility.lng}`;
-      const address = encodeURIComponent(facility.address);
-      const streetViewSrc = `https://www.google.com/maps?q=${address}&layer=c&cbll=${coords}&cbp=12,0,0,0,0&output=svembed`;
-      const streetPicture = facilityViewPictures[facility.name]?.street || (
-        facilityListingDetails[facility.name]?.gallery?.length
-          ? null
-          : facilityStreetPictures[facility.name]
-      );
-      const streetPictureHtml = streetPicture ? `
-        <button class="gallery-photo enlarge-photo" type="button" data-src="${streetPicture.src}" data-alt="${streetPicture.alt}" aria-label="Enlarge ${streetPicture.alt}">
-          <img src="${streetPicture.src}" alt="${streetPicture.alt}" loading="lazy">
-        </button>
-      ` : `
-        <iframe
-          title="${title} street picture"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          src="${streetViewSrc}">
-        </iframe>
-      `;
+      if (!streetPicture && !aerialPicture) return "";
+
       return `
         <section class="rich-section">
           <h4>Facility Views</h4>
           <div class="facility-visuals">
-            <div class="visual-frame">
+            ${streetPicture ? `<div class="visual-frame">
               <strong>Street picture</strong>
-              ${streetPictureHtml}
-            </div>
-            ${satelliteAerialFrameHtml(facility, title)}
+              <button class="gallery-photo enlarge-photo" type="button" data-src="${streetPicture.src}" data-alt="${streetPicture.alt}" aria-label="Enlarge ${streetPicture.alt}">
+                <img src="${streetPicture.src}" alt="${streetPicture.alt}" loading="lazy">
+              </button>
+            </div>` : ""}
+            ${aerialPicture ? `<div class="visual-frame">
+              <strong>Satellite aerial view</strong>
+              <button class="gallery-photo enlarge-photo" type="button" data-src="${aerialPicture.src}" data-alt="${aerialPicture.alt}" aria-label="Enlarge ${aerialPicture.alt}">
+                <img src="${aerialPicture.src}" alt="${aerialPicture.alt}" loading="lazy">
+              </button>
+            </div>` : ""}
           </div>
         </section>
       `;
@@ -2730,7 +2662,7 @@
               ["City", facility.city],
               ["State", facility.state]
             ];
-      const visualsHtml = aerialViewSectionHtml(facility, title);
+      const visualsHtml = facilityViewsSectionHtml(facility);
       const heroHtml = data?.image
         ? `<button class="rich-hero enlarge-photo" type="button" data-src="${data.image}" data-alt="${data.imageAlt || title}" aria-label="Enlarge ${title} facility image" style="background-image:url('${data.image}')"></button>`
         : "";
@@ -2818,7 +2750,7 @@
       selectedStatus.hidden = true;
       futureSlot.innerHTML = `
         <div class="rich-facility">
-          ${aerialViewSectionHtml(facility, data.title)}
+          ${facilityViewsSectionHtml(facility)}
           <button class="rich-hero enlarge-photo" type="button" data-src="${data.heroImage}" data-alt="Buena Park facility exterior" aria-label="Enlarge Buena Park facility exterior" style="background-image:url('${data.heroImage}')"></button>
           <section class="rich-section">
             <h4>AI Summary</h4>
