@@ -37,4 +37,6 @@ The following previously incomplete right-side panels were enriched from the exa
 
 Downloaded source-listing images are stored in `assets/listings/`. Citypark and Plano intentionally use neutral "Listing image" labels because their source images are identical.
 
+The 15 El Paso gallery images in `assets/listings/el-paso/` were cropped without upscaling from the user-supplied 1486 x 574 contact sheet, `Screenshot 2026-09-24 093600.png`. They are labeled neutrally as user-provided listing images and are not attributed to the Showcase CDN.
+
 Moreno Valley remains unchanged because its workbook URL returned an access-denied page, and Quality remains unchanged because its workbook `C1` link is blank. Remote Showcase and CityFeet images were not included because they did not load reliably; those facilities retain their map imagery. Listing availability and terms are presented as historical source statements and must be reverified before operational use.

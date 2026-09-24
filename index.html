@@ -1364,6 +1364,23 @@
     const facilityListingDetails = {
       "146-El Paso": {
         sourceUrl: "https://www.showcase.com/12104-emerald-pass-dr-el-paso-tx-79928/39995180/",
+        gallery: [
+          ["assets/listings/el-paso/el-paso-01.webp", "User-provided listing image 1 of 15"],
+          ["assets/listings/el-paso/el-paso-02.webp", "User-provided listing image 2 of 15"],
+          ["assets/listings/el-paso/el-paso-03.webp", "User-provided listing image 3 of 15"],
+          ["assets/listings/el-paso/el-paso-04.webp", "User-provided listing image 4 of 15"],
+          ["assets/listings/el-paso/el-paso-05.webp", "User-provided listing image 5 of 15"],
+          ["assets/listings/el-paso/el-paso-06.webp", "User-provided listing image 6 of 15"],
+          ["assets/listings/el-paso/el-paso-07.webp", "User-provided listing image 7 of 15"],
+          ["assets/listings/el-paso/el-paso-08.webp", "User-provided listing image 8 of 15"],
+          ["assets/listings/el-paso/el-paso-09.webp", "User-provided listing image 9 of 15"],
+          ["assets/listings/el-paso/el-paso-10.webp", "User-provided listing image 10 of 15"],
+          ["assets/listings/el-paso/el-paso-11.webp", "User-provided listing image 11 of 15"],
+          ["assets/listings/el-paso/el-paso-12.webp", "User-provided listing image 12 of 15"],
+          ["assets/listings/el-paso/el-paso-13.webp", "User-provided listing image 13 of 15"],
+          ["assets/listings/el-paso/el-paso-14.webp", "User-provided listing image 14 of 15"],
+          ["assets/listings/el-paso/el-paso-15.webp", "User-provided listing image 15 of 15"]
+        ],
         features: [
           ["Property name", "Building 4"],
           ["Property type", "Industrial distribution"],
@@ -2632,6 +2649,7 @@
         </div>
       `;
       const featureDetailsHtml = `
+        ${facility.name === "146-El Paso" ? listingGalleryHtml(listingData?.gallery) : ""}
         <section class="rich-section">
           <h4>Features</h4>
           <dl class="rich-grid">${rowsHtml(featureRows)}</dl>
@@ -2640,7 +2658,7 @@
           <h4>Lease Highlights</h4>
           ${(listingData?.highlights || []).map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
         </section>
-        ${listingGalleryHtml(listingData?.gallery)}
+        ${facility.name === "146-El Paso" ? "" : listingGalleryHtml(listingData?.gallery)}
       `;
 
       selectedName.textContent = title;
