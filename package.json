@@ -1,0 +1,12 @@
+{
+  "name": "wise-facility-map-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Editable static sandbox for the UNIS Facility Map Dashboard",
+  "scripts": {
+    "start": "http-server . -a 0.0.0.0 -p 4173 -c-1"
+  },
+  "devDependencies": {
+    "http-server": "14.1.1"
+  }
+}

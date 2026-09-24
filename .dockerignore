@@ -1,0 +1,6 @@
+*
+!Dockerfile
+!Caddyfile
+!index.html
+!assets/
+!assets/**
