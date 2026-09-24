@@ -49,7 +49,15 @@ The following local assets in `assets/listings/facility-views/` were optimized w
 - `quality street.png` -> Quality Street picture
 - `city park ariel.png` -> Citypark Satellite aerial view
 - `City park street.png` -> Citypark Street picture
+- `Plano street.png` -> Plano Street picture
+- `roanoke ariel.png` -> Roanoke Satellite aerial view
+- `willow arial.png` -> Willow Satellite aerial view
+- `Willow street.png` -> Willow Street picture
+- `Moreno valley street.png` -> Moreno Valley Street picture
+- `Tacoma arial.png` -> Tacoma Satellite aerial view
 
-`Screenshot 2026-09-24 101820.png` is byte-identical to `Airport street.png` and was intentionally deduplicated. No Plano street or Willow aerial asset was supplied, so those facilities retain their existing views.
+`Screenshot 2026-09-24 101820.png` is byte-identical to `Airport street.png` and was intentionally deduplicated.
 
-Moreno Valley remains unchanged because its workbook URL returned an access-denied page. Quality's listing enrichment remains blocked because its workbook `C1` link is blank; only the user-supplied street picture above was added. Remote Showcase and CityFeet images were not included because they did not load reliably; those facilities retain their map imagery. Listing availability and terms are presented as historical source statements and must be reverified before operational use.
+The seven top Features rows from the user-supplied `roanoke features.png` screenshot were transcribed into Roanoke's Features section. Its Available Spaces and Property Overview narrative were intentionally excluded; the existing unrelated Roanoke catalog facts remain present after the seven supplied rows.
+
+Moreno Valley's listing enrichment remains blocked because its workbook URL returned an access-denied page; only the user-supplied street picture above was added. Quality's listing enrichment remains blocked because its workbook `C1` link is blank; only its user-supplied street picture was added. Remote Showcase and CityFeet images were not included because they did not load reliably. Listing availability and terms are presented as historical source statements and must be reverified before operational use.
