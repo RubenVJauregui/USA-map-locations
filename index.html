@@ -1520,6 +1520,41 @@
       }
     };
 
+    const facilityViewPictures = {
+      "Airport": {
+        street: {
+          src: "assets/listings/facility-views/airport-street.webp",
+          alt: "Airport facility street picture"
+        }
+      },
+      "University Park": {
+        street: {
+          src: "assets/listings/facility-views/university-park-street.webp",
+          alt: "University Park facility street picture"
+        },
+        aerial: {
+          src: "assets/listings/facility-views/university-park-aerial.webp",
+          alt: "University Park facility aerial view"
+        }
+      },
+      "Quality": {
+        street: {
+          src: "assets/listings/facility-views/quality-street.webp",
+          alt: "Quality facility street picture"
+        }
+      },
+      "Citypark": {
+        street: {
+          src: "assets/listings/facility-views/citypark-street.webp",
+          alt: "Citypark facility street picture"
+        },
+        aerial: {
+          src: "assets/listings/facility-views/citypark-aerial.webp",
+          alt: "Citypark facility aerial view"
+        }
+      }
+    };
+
     const facilityAerialZooms = {
       "146-El Paso": 17,
       "Airport": 17,
@@ -2561,6 +2596,17 @@
     }
 
     function satelliteAerialFrameHtml(facility, title) {
+      const aerialPicture = facilityViewPictures[facility.name]?.aerial;
+      if (aerialPicture) {
+        return `
+          <div class="visual-frame">
+            <strong>Satellite aerial view</strong>
+            <button class="gallery-photo enlarge-photo" type="button" data-src="${aerialPicture.src}" data-alt="${aerialPicture.alt}" aria-label="Enlarge ${aerialPicture.alt}">
+              <img src="${aerialPicture.src}" alt="${aerialPicture.alt}" loading="lazy">
+            </button>
+          </div>
+        `;
+      }
       const coords = `${facility.lat},${facility.lng}`;
       const zoom = facilityAerialZooms[facility.name] || 17;
       return `
@@ -2577,10 +2623,19 @@
     }
 
     function aerialViewSectionHtml(facility, title) {
+      const streetPicture = facilityViewPictures[facility.name]?.street;
       return `
         <section class="rich-section">
           <h4>Facility Views</h4>
           <div class="facility-visuals">
+            ${streetPicture ? `
+              <div class="visual-frame">
+                <strong>Street picture</strong>
+                <button class="gallery-photo enlarge-photo" type="button" data-src="${streetPicture.src}" data-alt="${streetPicture.alt}" aria-label="Enlarge ${streetPicture.alt}">
+                  <img src="${streetPicture.src}" alt="${streetPicture.alt}" loading="lazy">
+                </button>
+              </div>
+            ` : ""}
             ${satelliteAerialFrameHtml(facility, title)}
           </div>
         </section>
@@ -2591,9 +2646,11 @@
       const coords = `${facility.lat},${facility.lng}`;
       const address = encodeURIComponent(facility.address);
       const streetViewSrc = `https://www.google.com/maps?q=${address}&layer=c&cbll=${coords}&cbp=12,0,0,0,0&output=svembed`;
-      const streetPicture = facilityListingDetails[facility.name]?.gallery?.length
-        ? null
-        : facilityStreetPictures[facility.name];
+      const streetPicture = facilityViewPictures[facility.name]?.street || (
+        facilityListingDetails[facility.name]?.gallery?.length
+          ? null
+          : facilityStreetPictures[facility.name]
+      );
       const streetPictureHtml = streetPicture ? `
         <button class="gallery-photo enlarge-photo" type="button" data-src="${streetPicture.src}" data-alt="${streetPicture.alt}" aria-label="Enlarge ${streetPicture.alt}">
           <img src="${streetPicture.src}" alt="${streetPicture.alt}" loading="lazy">

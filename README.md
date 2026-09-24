@@ -39,4 +39,17 @@ Downloaded source-listing images are stored in `assets/listings/`. Citypark and 
 
 The 15 El Paso gallery images in `assets/listings/el-paso/` were cropped without upscaling from the user-supplied 1486 x 574 contact sheet, `Screenshot 2026-09-24 093600.png`. They are labeled neutrally as user-provided listing images and are not attributed to the Showcase CDN.
 
-Moreno Valley remains unchanged because its workbook URL returned an access-denied page, and Quality remains unchanged because its workbook `C1` link is blank. Remote Showcase and CityFeet images were not included because they did not load reliably; those facilities retain their map imagery. Listing availability and terms are presented as historical source statements and must be reverified before operational use.
+## User-supplied facility views
+
+The following local assets in `assets/listings/facility-views/` were optimized without resizing from user-supplied PNG files and are scoped only to the named Facility Views slots:
+
+- `Airport street.png` -> Airport Street picture
+- `university  park ariel.png` -> University Park Satellite aerial view
+- `University Park street.png` -> University Park Street picture
+- `quality street.png` -> Quality Street picture
+- `city park ariel.png` -> Citypark Satellite aerial view
+- `City park street.png` -> Citypark Street picture
+
+`Screenshot 2026-09-24 101820.png` is byte-identical to `Airport street.png` and was intentionally deduplicated. No Plano street or Willow aerial asset was supplied, so those facilities retain their existing views.
+
+Moreno Valley remains unchanged because its workbook URL returned an access-denied page. Quality's listing enrichment remains blocked because its workbook `C1` link is blank; only the user-supplied street picture above was added. Remote Showcase and CityFeet images were not included because they did not load reliably; those facilities retain their map imagery. Listing availability and terms are presented as historical source statements and must be reverified before operational use.
